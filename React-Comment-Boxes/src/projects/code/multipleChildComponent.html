@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Component</title>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+<body>
+
+    <!-- Adding a board component to manage the Comment components comments -->
+
+    <!-- target selector-->
+    <div id="container"></div>
+
+    <script type="text/babel">
+    // HTML Component Object 
+        var Comment = React.createClass({
+    //custom method(s)
+
+                //Built in method that files automatically 
+                getInitialState: function(){
+                //editing variable set to false
+                return{editing: false}
+                },
+
+                edit: function (){
+                    //sets editing state to true
+                        this.setState({editing:true});
+                        console.log('EDITING COMMENT');
+                },
+
+                remove: function (){
+                        console.log('REMOVING COMMENT');
+                },
+
+                //Sets editing to false
+                save: function (){
+                    //sets editing state to false
+                    //Grabs value reference of text typed by user in textarea
+                    var val = this.refs.newText.value;
+                    console.log('New Comment ' + val);
+                        this.setState({editing:false});
+                        console.log('SAVING COMMENT');
+                },
+
+                renderNormal: function(){
+                    return (
+                    //Anything between tags (i.e the comment tags) are  child properties. Accessing child properties of comment section to get unique name
+                            <div className="commentContainer">
+                                <div className="commentText">{this.props.children}</div>
+                                <buttons onClick={this.edit} className="button-primary">Edit</buttons>
+                                <buttons onClick={this.remove} className="button-danger">Remove</buttons>
+                            </div>
+                    );
+                },
+
+                renderForm: function(){
+                    return (
+                            <div className="commentContainer">
+                            {/* Display text in the form textarea*/}
+                            {/*To refer the textareas value give it a ref attribute rather than ID, which wont work for different componenets*/}
+                                <textarea ref="newText"defaultValue={this.props.children}></textarea>
+                                {/* Whilst in editing mode invoke save method*/}
+                                <buttons onClick={this.save} className="button-success">Save</buttons>
+                            </div>
+                    );
+                },
+
+            //render function returns HTML
+            render: function() {
+               //If editing mode, display the form, if not display without the form
+
+               if(this.state.editing){
+                   return this.renderForm();
+               }else{
+                    return this.renderNormal();
+               }
+            }
+        });
+
+  // reference each individual comment in this board component. Its a manager for all comments.
+  //Now have a lot more control of the comments in the programme. 
+  //Board component. Now manages all of the comments originally delt with by the comment component. Its passed into the Board component. 
+        var Board = React.createClass({
+
+        // Use built in state method since we want the commnets array to change, as its a state. 
+                getInitialState: function () {
+                    return {
+                        comments: [
+                            'Comment 1',
+                            'Comment 2',
+                            'Comment 3'
+                        ]
+                    }
+                },
+
+                render: function () {
+                    return (
+                            <div className="board">
+                              {
+                                  //the comments array which is a state is looped over using map 
+                                  //Counter = i as normal with array items
+                                  this.state.comments.map(function (commentText, i){
+                                      //key uniquely identifies each child, its used for the i iteration
+                                      //Return Comment component dynamically, looping through all comments 
+                                        return (<Comment key={i}>{commentText}</Comment>);
+                                  })
+                              }
+                            </div>
+                         );
+                    }
+        });
+       
+
+        //Set component to target selector 
+        ReactDOM.render(<Board />, document.getElementById('container'));
+    </script>
+
+</body>
+</html>

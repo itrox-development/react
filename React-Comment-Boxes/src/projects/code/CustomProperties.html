@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Component</title>
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+<body>
+
+  <!--Return one parent DIV with two ELEMENTS in a single component
+      to have more than one element item -->
+
+    <!-- target selector-->
+    <div id="container"></div>
+
+    <script type="text/babel">
+    // HTML Component Object 
+        var Films = React.createClass({
+            //render function returns HTML
+            render: function() {
+                return (
+                    //Acessing properties
+                    <div>
+                        <h1>{this.props.title}</h1>
+                        <h2>{this.props.genre}</h2>
+                    </div>
+                    );
+            }
+        });
+
+        //Set component to target selector 
+       // Passing in title and genre properties
+        ReactDOM.render(
+            <div>
+            <Films title="Avengers" genre="action" />
+            <Films title="Age of Ultron" genre="action" />
+            <Films title="Infinity War" genre="action" />
+            <Films title="End Game" genre="action" />
+            </div>
+            , document.getElementById('container'));
+    </script>
+
+</body>
+</html>

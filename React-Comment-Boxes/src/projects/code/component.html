@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Component</title>
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+<body>
+
+   
+ <!-- Each component can only return one parent element e.g. H2-->
+    <!-- target selector-->
+    <div id="container"></div>
+
+    <script type="text/babel">
+    // HTML Component Object 
+        var TheComponent = React.createClass({
+            //render function returns HTML
+            render: function() {
+                return (<h2>Title in the component</h2>);
+            }
+        });
+        //Set component to target selector 
+        ReactDOM.render(<TheComponent />, document.getElementById('container'));
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Component</title>
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+<body>
+
+  <!--Return one parent DIV with two ELEMENTS in a single component
+      to have more than one element item -->
+
+    <!-- target selector-->
+    <div id="container"></div>
+
+    <script type="text/babel">
+    // HTML Component Object 
+        var TheComponent = React.createClass({
+            //render function returns HTML
+            render: function() {
+                return (
+                    <div>
+                        <h2>Title in the component</h2>
+                        <p>Text in the component</p>
+                    </div>);
+            }
+        });
+        //Set component to target selector 
+        //Can add the component multiple times in a DIV 
+        ReactDOM.render(<div>
+        <TheComponent />
+        <TheComponent />
+        </div>, document.getElementById('container'));
+    </script>
+
+</body>
+</html>

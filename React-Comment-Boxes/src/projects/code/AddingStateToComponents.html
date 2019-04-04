@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Component</title>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+<body>
+
+
+    <!-- target selector-->
+    <div id="container"></div>
+
+    <script type="text/babel">
+    // HTML Component Object 
+        var Comment = React.createClass({
+    //custom method(s)
+
+                //Built in method that files automatically 
+                getInitialState: function(){
+                //editing variable set to false
+                return{editing: false}
+                },
+
+                edit: function (){
+                    //sets editing state to true
+                        this.setState({editing:true});
+                        console.log('EDITING COMMENT');
+                },
+
+                remove: function (){
+                        console.log('REMOVING COMMENT');
+                },
+
+                //Sets editing to false
+                save: function (){
+                    //sets editing state to false
+                        this.setState({editing:false});
+                        console.log('SAVING COMMENT');
+                },
+
+                renderNormal: function(){
+                    return (
+                    //Anything between tags (i.e the comment tags) are  child properties. Accessing child properties of comment section to get unique name
+                            <div className="commentContainer">
+                                <div className="commentText">{this.props.children}</div>
+                                <buttons onClick={this.edit} className="button-primary">Edit</buttons>
+                                <buttons onClick={this.remove} className="button-danger">Remove</buttons>
+                            </div>
+                    );
+                },
+
+                renderForm: function(){
+                    return (
+                            <div className="commentContainer">
+                            {/* Display text in the form textarea*/}
+                                <textarea defaultValue={this.props.children}></textarea>
+                                {/* Whilst in editing mode incoke save method*/}
+                                <buttons onClick={this.save} className="button-success">Save</buttons>
+                            </div>
+                    );
+                },
+
+            //render function returns HTML
+            render: function() {
+               //If editing mode, display the form, if not display without the form
+
+               if(this.state.editing){
+                   return this.renderForm();
+               }else{
+                    return this.renderNormal();
+               }
+            }
+        });
+
+        //Set component to target selector 
+
+        ReactDOM.render(
+            <div className="board">
+            <Comment> First Comment </Comment>
+            <Comment> Second Comment </Comment>
+            <Comment> Third Comment </Comment>
+            </div>
+            , document.getElementById('container'));
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Component</title>
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+<body>
+
+   
+
+    <div id="container"></div>
+
+    <script type="text/babel">
+    // HTML Component Object 
+    //Use state to customise a component. Unlike properties states can change.
+        var TheCheckBox = React.createClass({
+            //render function returns HTML
+
+            //Built in function (invokes auto) to set up initial state of checkbox component
+            getInitialState: function(){
+                //Initial state of checkbox variable
+                return{checked: true}
+            },
+
+            // Sets checked state message based on the current checkbox state
+            handleChecked: function(){
+                //use setState method to change the state of the "checked" variable of the checkbox component
+                //e.g checked VS unckecked
+               this.setState({checked: !this.state.checked})
+            },
+
+            render: function() {
+                var msg;
+                //Logic for current state of checkbox variable
+                if(this.state.checked){
+                    msg = 'checked'
+                }else{
+                    msg = 'unchecked'
+                }
+                //Markup component
+                return (
+                    <div>
+                         {/* Use state property to see the current state of the checked variable of the checkbox component */}
+                          {/* on Dom activity change run "handleChecked" */}
+                         <input type="checkbox" onChange={this.handleChecked} defaultChecked={this.state.checked} />
+                         {/* outputs checked or unchecked message base on variable status */}
+                        <h3>checkbox is {msg}</h3>
+                    </div>
+                );
+            }
+        });
+        //Set component to target selector 
+        ReactDOM.render(<TheCheckBox />, document.getElementById('container'));
+    </script>
+
+</body>
+</html>
