@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>React - Component</title>
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
+    
+    <script src="../../js/react.min.js"></script>
+    <script src="../../js/react-dom.min.js"></script>
+    <script src="../../js/browser.min.js"></script>
+</head>
+<body>
+
+    <!-- Editing and removing comments-->
+
+    <!-- target selector-->
+    <div id="container"></div>
+
+    <script type="text/babel">
+   
+    //Comment component the functional way (Regualr JS way not es6)
+        var Comment = React.createClass({
+    //custom method(s)
+
+                //Built in method that fires automatically 
+                getInitialState: function() {
+                //editing variable set to false
+                return{editing: false}
+                },
+
+                 //Event handlers
+                edit: function() {
+                    //sets editing state to true
+                        this.setState({editing:true});
+                        console.log('EDITING COMMENT');
+                },
+
+                remove: function(){
+                        console.log('REMOVING COMMENT');
+                        //Runs removeComment function in Board component, through "deleteFromBoard" property, removes current item index
+                        this.props.deleteFromBoard(this.props.index)
+                },
+
+                //Sets editing to false
+                save: function() {
+                    //sets editing state to false
+                    //Grabs value reference of text typed by user in textarea
+                  
+                    console.log('YOU JUST ADDED COMMENT > ');
+                    //Runs updateComment function in Board component, through "updateCommentText" property, references value of new text and 
+                    //adds current item index
+                    this.props.updateCommentText(this.refs.newText.value, this.props.index)
+                        this.setState({editing:false});
+                        console.log('SAVING COMMENT');
+                },
+
+                renderNormal: function(){
+                    return (
+                    //Anything between tags (i.e the comment tags) are  child properties. Accessing child properties of comment section to get unique name
+                            <div className="commentContainer">
+                                <div className="commentText">{this.props.children}</div>
+                                <buttons onClick={this.edit} className="button-primary">Edit</buttons>
+                                <buttons onClick={this.remove} className="button-danger">Remove</buttons>
+                            </div>
+                    );
+                },
+
+                renderForm: function() {
+                    return (
+                            <div className="commentContainer">
+                            {/* Display text in the form textarea*/}
+                            {/*To refer the textareas value give it a ref attribute rather than ID, which wont work for different componenets*/}
+                                <textarea ref="newText"defaultValue={this.props.children}></textarea>
+                                {/* Whilst in editing mode invoke save method*/}
+                                <buttons onClick={this.save} className="button-success">Save</buttons>
+                            </div>
+                    );
+                },
+
+            //render function returns HTML
+            render: function() {
+               //If editing mode, display the form, if not display without the form
+
+               if(this.state.editing){
+                   return this.renderForm();
+               }else{
+                    return this.renderNormal();
+               }
+            }
+        });
+
+  //Reference each individual comment in this board component. Its a manager for all comments.
+  //Now have a lot more control of the comments in the programme. 
+  //Board component. Now manages all of the comments originally delt with by the comment component. Its passed into the Board component. 
+      //Comment component the functional way (Regualr JS way not es6)
+        var Board = React.createClass({
+
+                // Use built in state method since we want the comments array to change, comments array is a state. 
+                getInitialState: function() {
+                    return {
+                        comments: []
+                    }
+                },
+
+                //Add new comment box, takes string of text and adds to state comments array
+                add: function(text){
+                    //make reference to state array 
+                    var arr = this.state.comments;
+                    //Add new text item to "arr" array
+                    arr.push(text);
+                    this.setState({comments:arr})
+                },
+
+                //Deletes current array index
+                removeComment: function(i) {
+                    console.log("REMOVING COMMENT: " + i);
+                    //Assign comments array state to new variable
+                    var commentsArray = this.state.comments;
+                    //Splice array to remove comment 
+                    //remove anything from current array item and before next array item (just removes current item)
+                    commentsArray.splice(i, 1) // e.g. splice(0,1);
+                    //Update by setting comments array state to the new edited variable
+                    this.setState({comments:commentsArray})
+                },
+
+                //newText is users currently added text, set to current array item
+                updateComment: function(newText, i){
+                    console.log("UPDATING COMMENT");
+                     //Assign comments array state to new variable
+                    var commentsArray = this.state.comments;
+                    //Assign users newly inputted text to commmentsArray of current item
+                    commentsArray[i] = newText;
+                      //Update by setting comments array state to the new edited variable
+                    this.setState({comments:commentsArray})
+                },
+
+                eachComment: function(commentText, i){
+                                     
+                                        //This eachComment method returns the Comment component dynamically, looping through all comments 
+                                        //Create i key to uniquely identify each child, its used for the i iteration of comments
+                                         //Counter = i as normal with array items. Its for react to keep track.
+                                        //Add index for us to keep track. i will = to index. 
+                                        return (
+                                            //Comment component given property of "updateCommentText" which invokes "updateComment" function
+                                            //Can now use function from this Board component in the Comment component. Same with "deleteFromBoard" property
+                                            <Comment key={i} index={i} updateCommentText={this.updateComment} deleteFromBoard={this.removeComment}>
+                                            {commentText}
+                                            </Comment>
+                                            );
+
+                },
+
+                //Renders all
+                render: function() {
+                    return (
+                            <div className="center">
+                                {/*onClick property runs add function, bind to pass values or text in. */}
+                                <button onClick={this.add.bind(null, 'Add Text Here')} className ="button-info create">ADD NEW BOX</button>
+                               { /*//the comments array which is a state is looped over using map */ } 
+                            <div className="board">
+                              {this.state.comments.map(this.eachComment)}
+                            </div>
+                            </div>
+                         );
+                    }
+        });
+       
+
+        //Set component to target selector 
+        ReactDOM.render(<Board />, document.getElementById('container'));
+    </script>
+
+</body>
+</html>
